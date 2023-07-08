@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from "react";
+import Auth from "./components/Auth";
+import {Routes, Route, useNavigate} from "react-router-dom";
+import Home from "./pages/Home";
+import ForgotPassword from "./pages/ForgotPassword";
 
-function App() {
+const App = () => {
+    const navigate = useNavigate();
+
+    const isAuth = localStorage.getItem('user');
+
+    useEffect(() => {
+        if (!isAuth) {
+            navigate('/login');
+        } else {
+            navigate('/');
+        }
+    }, [localStorage]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div>
+          <Routes>
+            <Route path="/register" element={<Auth form={"register"} />} />
+            <Route path="/login" element={<Auth form={"login"} />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+      </div>
   );
 }
 
